@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "phillipa"
+version = "0.1.0"
+description = "Phillipa The Dolphin"
+authors = ["Dan Trickey <dan@trickey.io>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+"discord.py" = "^1.3.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
