@@ -1,5 +1,6 @@
 import discord
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -44,4 +45,5 @@ class PhillipaBot(discord.Client):
 if __name__ == "__main__":
     logging.info("Starting Phillipa")
     client = PhillipaBot()
-    client.run("NzA3NjYyNjEwMTk5MzQ3Mjgx.XrMFiQ.BsSGHNDGhlAQzsjesBZhQKxEnV0")
+    token = os.environ.get('DISCORD_TOKEN', "NzEwMjMyOTg0NTk0MTUzNDcz.XrxgtA.IhI32vh8JZtlzWqCGQER_nRGzyY")
+    client.run(token)

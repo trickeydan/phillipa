@@ -4,4 +4,6 @@ COPY phillipa.py ./
 
 RUN pip install --no-cache-dir discord.py
 
+ENV DISCORD_TOKEN="NzA3NjYyNjEwMTk5MzQ3Mjgx.Xrxglg.Qk9sxvW0e33JpS8MttUfYuVrUqQ"
+
 CMD ["python", "phillipa.py"]
