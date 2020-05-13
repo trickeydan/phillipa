@@ -1,37 +1,18 @@
 import discord
 import logging
 import os
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 
-GOOD_KEYWORDS = [
-    "dolphin",
-    "phil",
-    "phillipa",
-    "rishi",
-    "jesters",
-    "bills bills bills",
-    "the crown inn",
-    "southampton",
-    "soton",
-    "flower",
-    "baa",
-    "number ten",
-    "number 10",
-    "bin",
-    "build-a-rally",
-    "build a rally",
-]
-
-BAD_KEYWORDS = [
-    "portsmouth",
-    "fishing net",
-    "stupid pink thing",
-    "nasty pink thing",
-    "pink thing",
-]
 
 class PhillipaBot(discord.Client):
+
+    def __init__(self, good_keywords, bad_keywords):
+        super().__init__()
+
+        self.good_keywords = good_keywords
+        self.bad_keywords = bad_keywords
 
     async def on_ready(self):
         logging.info(f"Connected as {self.user}")
@@ -44,12 +25,12 @@ class PhillipaBot(discord.Client):
 
         good_conditions.append(self.user in message.mentions)
 
-        for word in GOOD_KEYWORDS:
+        for word in self.good_keywords:
             good_conditions.append(word in content)
 
         bad_conditions = []
 
-        for word in BAD_KEYWORDS:
+        for word in self.bad_keywords:
             bad_conditions.append(word in content)
 
         if any(good_conditions) and not any(bad_conditions):
@@ -65,8 +46,15 @@ class PhillipaBot(discord.Client):
             logging.info(f"{user} is nice.")
             await user.send("💮")
 
+def load_words(filename):
+    path = Path(filename)
+    with path.open() as fh:
+        return fh.read().split("\n")
+
 if __name__ == "__main__":
     logging.info("Starting Phillipa")
-    client = PhillipaBot()
+    good = load_words("good.txt")
+    bad = load_words("bad.txt")
+    client = PhillipaBot(good, bad)
     token = os.environ.get('DISCORD_TOKEN', "NzEwMjMyOTg0NTk0MTUzNDcz.XrxgtA.IhI32vh8JZtlzWqCGQER_nRGzyY")
     client.run(token)
