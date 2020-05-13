@@ -3,7 +3,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-GOOD_KEYWORDS = ["dolphin", "phil", "phillipa", "rishi", "jesters", "bills bills bills", "the crown inn", "southampton", "soton", "flower"]
+GOOD_KEYWORDS = ["dolphin", "phil", "phillipa", "rishi", "jesters", "bills bills bills", "the crown inn", "southampton", "soton", "flower", "baa", "number ten", "number 10", "bin", "build-a-rally", "build a rally"]
 BAD_KEYWORDS = ["portsmouth", "fishing net"]
 
 
