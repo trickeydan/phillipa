@@ -12,8 +12,5 @@ def app() -> None:
     good = load_words("good.txt")
     bad = load_words("bad.txt")
     client = PhillipaBot(good, bad)
-    token = os.environ.get(
-        'DISCORD_TOKEN',
-        "NzEwMjMyOTg0NTk0MTUzNDcz.XrxgtA.IhI32vh8JZtlzWqCGQER_nRGzyY",
-    )
+    token = os.environ.get('DISCORD_TOKEN')
     client.run(token)
