@@ -5,6 +5,10 @@ from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 
+FLOWER = "💮"
+ANGRY = "😠"
+
+MENTION_EMOJI = FLOWER
 
 class PhillipaBot(discord.Client):
 
@@ -23,8 +27,6 @@ class PhillipaBot(discord.Client):
 
         good_conditions = []
 
-        good_conditions.append(self.user in message.mentions)
-
         for word in self.good_keywords:
             good_conditions.append(word in content)
 
@@ -35,16 +37,20 @@ class PhillipaBot(discord.Client):
 
         if any(good_conditions) and not any(bad_conditions):
             logging.info("I like")
-            await message.add_reaction("💮")
+            await message.add_reaction(FLOWER)
+
+        if self.user in message.mentions and not any(bad_conditions):
+            logging.info("I like")
+            await message.add_reaction(MENTION_EMOJI)
 
         if any(bad_conditions):
             logging.info("I dislike")
-            await message.add_reaction("😠")
+            await message.add_reaction(ANGRY)
 
     async def on_reaction_add(self, reaction, user):
-        if not user.bot and reaction.emoji == "💮":
+        if not user.bot and reaction.emoji == FLOWER:
             logging.info(f"{user} is nice.")
-            await user.send("💮")
+            await user.send(FLOWER)
 
 def load_words(filename):
     path = Path(filename)
