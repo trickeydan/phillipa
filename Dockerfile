@@ -5,8 +5,6 @@ WORKDIR /app
 RUN pip install --no-cache-dir discord.py
 
 COPY phillipa/ ./phillipa/
-COPY good.txt ./
-COPY bad.txt ./
-
+COPY resources/ ./resources/
 
 CMD ["python", "-m", "phillipa"]
