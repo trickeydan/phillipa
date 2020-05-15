@@ -1,14 +1,9 @@
 import discord
 import logging
-import os
-from pathlib import Path
+
+from phillipa.emoji import FLOWER, ANGRY, MENTION_EMOJI
 
 logging.basicConfig(level=logging.INFO)
-
-FLOWER = "💮"
-ANGRY = "😠"
-
-MENTION_EMOJI = FLOWER
 
 class PhillipaBot(discord.Client):
 
@@ -51,16 +46,3 @@ class PhillipaBot(discord.Client):
         if not user.bot and reaction.emoji == FLOWER:
             logging.info(f"{user} is nice.")
             await user.send(FLOWER)
-
-def load_words(filename):
-    path = Path(filename)
-    with path.open() as fh:
-        return fh.read().split("\n")
-
-if __name__ == "__main__":
-    logging.info("Starting Phillipa")
-    good = load_words("good.txt")
-    bad = load_words("bad.txt")
-    client = PhillipaBot(good, bad)
-    token = os.environ.get('DISCORD_TOKEN', "NzEwMjMyOTg0NTk0MTUzNDcz.XrxgtA.IhI32vh8JZtlzWqCGQER_nRGzyY")
-    client.run(token)
