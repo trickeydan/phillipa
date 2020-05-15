@@ -28,32 +28,30 @@ class PhillipaBot(Client):
 
     async def on_message(self, message: Message) -> None:
         """Message received."""
-        content = message.content.lower()
 
-        good_conditions = []
+        good: bool = self._message_matches(self.good_keywords, message)
+        bad: bool = self._message_matches(self.bad_keywords, message)
 
-        for word in self.good_keywords:
-            good_conditions.append(word in content)
-
-        bad_conditions = []
-
-        for word in self.bad_keywords:
-            bad_conditions.append(word in content)
-
-        if any(good_conditions) and not any(bad_conditions):
-            LOGGER.info("I like")
-            await message.add_reaction(FLOWER)
-
-        if self.user in message.mentions and not any(bad_conditions):
-            LOGGER.info("I like")
-            await message.add_reaction(MENTION_EMOJI)
-
-        if any(bad_conditions):
+        if bad:
             LOGGER.info("I dislike")
             await message.add_reaction(ANGRY)
+        else:
+            if good or self.user in message.mentions:
+                LOGGER.info("I like")
+                await message.add_reaction(FLOWER)            
 
     async def on_reaction_add(self, reaction: Reaction, user: User) -> None:
         """Reaction added to message in cache."""
         if not user.bot and reaction.emoji == FLOWER:
             LOGGER.info(f"{user} is nice.")
             await user.send(FLOWER)
+
+    def _message_matches(self, pattern_list: List[str], message: Message) -> bool:
+        """Check if the message matches any of the patterns."""
+        content = message.content.lower()
+        return any([self._message_compare(pattern, content) for pattern in pattern_list])
+
+
+    def _message_compare(self, pattern: str, content: str) -> bool:
+        """Comparison function."""
+        return pattern in content
