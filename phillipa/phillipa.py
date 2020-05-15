@@ -3,7 +3,7 @@ import logging
 
 from phillipa.emoji import FLOWER, ANGRY, MENTION_EMOJI
 
-logging.basicConfig(level=logging.INFO)
+LOGGER = logging.getLogger(__name__)
 
 class PhillipaBot(discord.Client):
 
@@ -14,7 +14,7 @@ class PhillipaBot(discord.Client):
         self.bad_keywords = bad_keywords
 
     async def on_ready(self):
-        logging.info(f"Connected as {self.user}")
+        LOGGER.info(f"Connected as {self.user}")
 
     async def on_message(self, message):
         
@@ -31,18 +31,18 @@ class PhillipaBot(discord.Client):
             bad_conditions.append(word in content)
 
         if any(good_conditions) and not any(bad_conditions):
-            logging.info("I like")
+            LOGGER.info("I like")
             await message.add_reaction(FLOWER)
 
         if self.user in message.mentions and not any(bad_conditions):
-            logging.info("I like")
+            LOGGER.info("I like")
             await message.add_reaction(MENTION_EMOJI)
 
         if any(bad_conditions):
-            logging.info("I dislike")
+            LOGGER.info("I dislike")
             await message.add_reaction(ANGRY)
 
     async def on_reaction_add(self, reaction, user):
         if not user.bot and reaction.emoji == FLOWER:
-            logging.info(f"{user} is nice.")
+            LOGGER.info(f"{user} is nice.")
             await user.send(FLOWER)
