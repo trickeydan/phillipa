@@ -1,16 +1,17 @@
 dolphin
-phil
-phillipa
+phil(lipa)?
 rishi
 jesters
-bills bills bills
+(bills ){2}bills
 the crown inn
 southampton
 soton
 flower
-baa
+baa+
 number ten
 number 10
-bin
-build-a-rally
-build a rally
+build.?a.?rally
+fish pie
+christmas cake
+cheese salad
+rack of ribs
