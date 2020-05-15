@@ -13,4 +13,5 @@ def app() -> None:
     bad = load_words("resources/bad.txt")
     client = PhillipaBot(good, bad)
     token = os.environ.get('DISCORD_TOKEN')
-    client.run(token)
+    if token is not None:
+        client.run(token)
