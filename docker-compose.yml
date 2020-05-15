@@ -2,3 +2,5 @@ version: "3"
 services:
   phillipa:
     image: phillipa:latest
+    env_file:
+     - .env
