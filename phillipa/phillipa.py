@@ -20,8 +20,8 @@ class PhillipaBot(Client):
     def __init__(self, good_keywords: List[str], bad_keywords: List[str]):
         super().__init__()
 
-        self.good_patterns: List[Pattern[str]] = [re.compile(kw) for kw in good_keywords]
-        self.bad_patterns: List[Pattern[str]] = [re.compile(kw) for kw in bad_keywords]
+        self.good_patterns: List[Pattern[str]] = [re.compile(kw, flags=re.IGNORECASE) for kw in good_keywords]
+        self.bad_patterns: List[Pattern[str]] = [re.compile(kw, flags=re.IGNORECASE) for kw in bad_keywords]
 
     async def on_ready(self) -> None:
         """Called when bot is connected."""
@@ -52,9 +52,8 @@ class PhillipaBot(Client):
         message: Message,
     ) -> bool:
         """Check if the message matches any of the patterns."""
-        content = message.content.lower()
-        return any(self._message_compare(pattern, content) for pattern in pattern_list)
+        return any(self._message_compare(pattern, message.content) for pattern in pattern_list)
 
     def _message_compare(self, pattern: Pattern[str], content: str) -> bool:
         """Comparison function."""
-        return re.match(pattern, content) is not None
+        return re.search(pattern, content) is not None
