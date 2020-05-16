@@ -3,7 +3,7 @@ import logging
 import re
 from typing import List, Pattern
 
-from discord import Client, Message, Reaction, User
+from discord import Activity, ActivityType, Client, Message, Reaction, User
 
 from phillipa.emoji import ANGRY, FLOWER
 
@@ -26,6 +26,7 @@ class PhillipaBot(Client):
     async def on_ready(self) -> None:
         """Called when bot is connected."""
         LOGGER.info(f"Connected as {self.user}")
+        await self.change_presence(activity=Activity(type=ActivityType.playing, name="in the waves"))
 
     async def on_message(self, message: Message) -> None:
         """Message received."""
