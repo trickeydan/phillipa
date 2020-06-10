@@ -3,7 +3,7 @@ import re
 from abc import ABCMeta, abstractmethod
 from typing import List, Pattern
 
-from discord import Message, Reaction, User
+from discord import ClientUser, Message, Reaction, User
 
 
 class Trigger(metaclass=ABCMeta):
@@ -43,3 +43,18 @@ class MessageRegexReactTrigger(Trigger):
     def _message_compare(self, pattern: Pattern[str], content: str) -> bool:
         """Comparison function."""
         return re.search(pattern, content) is not None
+
+
+class UserMentionedReactTrigger(Trigger):
+    """React when a specific user is mentioned."""
+
+    def __init__(self, user: ClientUser, emoji: str):
+        self.user = user
+        self.emoji = emoji
+
+    async def try_message(self, message: Message) -> bool:
+        """Try a message to see if it matches."""
+        print(self.user, message.mentions)
+        if match := self.user in message.mentions:
+            await message.add_reaction(self.emoji)
+        return match

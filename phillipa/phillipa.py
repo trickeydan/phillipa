@@ -6,7 +6,11 @@ from typing import List, Pattern
 from discord import Activity, ActivityType, Client, Message, Reaction, User
 
 from phillipa.emoji import ANGRY, FLOWER
-from phillipa.trigger import MessageRegexReactTrigger, Trigger
+from phillipa.trigger import (
+    MessageRegexReactTrigger,
+    Trigger,
+    UserMentionedReactTrigger,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,7 +34,6 @@ class PhillipaBot(Client):
         self.triggers: List[Trigger] = [
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRegexReactTrigger(good_patterns, FLOWER),
-            # TODO: React on mention
         ]
 
     async def on_ready(self) -> None:
@@ -39,6 +42,8 @@ class PhillipaBot(Client):
         await self.change_presence(
             activity=Activity(type=ActivityType.playing, name="in the waves"),
         )
+
+        self.triggers.append(UserMentionedReactTrigger(self.user, FLOWER))
 
     async def on_message(self, message: Message) -> None:
         """Message received."""
