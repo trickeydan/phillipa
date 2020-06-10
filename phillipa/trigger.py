@@ -61,15 +61,19 @@ class UserMentionedReactTrigger(Trigger):
 class MessageReactSendMessageTrigger(Trigger):
     """Send the user a message when they react to a message."""
 
-    def __init__(self, emoji: str, message=Optional[str]) -> None:
+    def __init__(self, emoji: str, message: Optional[str] = None) -> None:
         self.emoji = emoji
         if message is None:
             self.message = emoji
         else:
             self.message = message
-    
-    async def try_reaction(self, reaction: Reaction, user: User, *, ignore_bots: bool = True) -> bool:
+
+    async def try_reaction(
+        self, reaction: Reaction, user: User, *, ignore_bots: bool = True,
+    ) -> bool:
         """Try a reaction."""
         if ignore_bots and not user.bot or not ignore_bots:
             if reaction.emoji == self.emoji:
                 await user.send(self.message)
+                return True
+        return False

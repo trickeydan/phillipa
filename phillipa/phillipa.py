@@ -7,10 +7,10 @@ from discord import Activity, ActivityType, Client, Message, Reaction, User
 
 from phillipa.emoji import ANGRY, FLOWER
 from phillipa.trigger import (
+    MessageReactSendMessageTrigger,
     MessageRegexReactTrigger,
     Trigger,
     UserMentionedReactTrigger,
-    MessageReactSendMessageTrigger,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -35,7 +35,7 @@ class PhillipaBot(Client):
         self.triggers: List[Trigger] = [
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRegexReactTrigger(good_patterns, FLOWER),
-            MessageReactSendMessageTrigger(FLOWER, FLOWER)
+            MessageReactSendMessageTrigger(FLOWER, FLOWER),
         ]
 
     async def on_ready(self) -> None:
