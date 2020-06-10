@@ -11,7 +11,8 @@ def app() -> None:
     logger_setup()
     good = load_words("resources/good.txt")
     bad = load_words("resources/bad.txt")
-    client = PhillipaBot(good, bad)
+    trains = load_words("resources/trains.txt")
+    client = PhillipaBot(good, bad, trains)
     token = os.environ.get("DISCORD_TOKEN")
     if token is not None:
         client.run(token)

@@ -5,8 +5,9 @@ from typing import List, Pattern
 
 from discord import Activity, ActivityType, Client, Message, Reaction, User
 
-from phillipa.emoji import ANGRY, FLOWER
+from phillipa.emoji import ALL_TRAINS, ANGRY, FLOWER
 from phillipa.trigger import (
+    MessageRandomReactTrigger,
     MessageReactSendMessageTrigger,
     MessageRegexReactTrigger,
     Trigger,
@@ -23,7 +24,12 @@ class PhillipaBot(Client):
     Receives events over websocket protocol and does stuff in response.
     """
 
-    def __init__(self, good_keywords: List[str], bad_keywords: List[str]):
+    def __init__(
+        self,
+        good_keywords: List[str],
+        bad_keywords: List[str],
+        train_keywords: List[str],
+    ):
         super().__init__()
         good_patterns: List[Pattern[str]] = [
             re.compile(kw, flags=re.IGNORECASE) for kw in good_keywords
@@ -31,9 +37,13 @@ class PhillipaBot(Client):
         bad_patterns: List[Pattern[str]] = [
             re.compile(kw, flags=re.IGNORECASE) for kw in bad_keywords
         ]
+        train_patterns: List[Pattern[str]] = [
+            re.compile(kw, flags=re.IGNORECASE) for kw in train_keywords
+        ]
 
         self.triggers: List[Trigger] = [
             MessageRegexReactTrigger(bad_patterns, ANGRY),
+            MessageRandomReactTrigger(train_patterns, list(ALL_TRAINS.values())),
             MessageRegexReactTrigger(good_patterns, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
         ]

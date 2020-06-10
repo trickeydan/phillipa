@@ -1,6 +1,7 @@
 """Triggers for Phillipa."""
 import re
 from abc import ABCMeta
+from random import choice
 from typing import List, Optional, Pattern
 
 from discord import ClientUser, Message, Reaction, User
@@ -28,8 +29,12 @@ class MessageRegexReactTrigger(Trigger):
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it matches."""
         if match := self._message_matches(self.regex_list, message):
-            await message.add_reaction(self.emoji)
+            await self.react(message)
         return match
+
+    async def react(self, message: Message) -> None:
+        """React with an emoji."""
+        await message.add_reaction(self.emoji)
 
     def _message_matches(
         self, pattern_list: List[Pattern[str]], message: Message,
@@ -42,6 +47,18 @@ class MessageRegexReactTrigger(Trigger):
     def _message_compare(self, pattern: Pattern[str], content: str) -> bool:
         """Comparison function."""
         return re.search(pattern, content) is not None
+
+
+class MessageRandomReactTrigger(MessageRegexReactTrigger):
+    """React randomly to a message."""
+
+    def __init__(self, regex_list: List[Pattern[str]], emojis: List[str]) -> None:
+        self.regex_list = regex_list
+        self.emojis = emojis
+
+    async def react(self, message: Message) -> None:
+        """React with an emoji."""
+        await message.add_reaction(choice(self.emojis))
 
 
 class UserMentionedReactTrigger(Trigger):
