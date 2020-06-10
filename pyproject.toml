@@ -21,6 +21,7 @@ flake8-todo = "^0.7.0"
 mypy = "^0.761"
 rope = "^0.16.0"
 isort = {version = "^4.3",extras = ["pyproject"]}
+black = {version = "^19.10b0", allow-prereleases = true}
 
 
 [build-system]
