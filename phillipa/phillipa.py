@@ -10,6 +10,7 @@ from phillipa.trigger import (
     MessageRegexReactTrigger,
     Trigger,
     UserMentionedReactTrigger,
+    MessageReactSendMessageTrigger,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -34,6 +35,7 @@ class PhillipaBot(Client):
         self.triggers: List[Trigger] = [
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRegexReactTrigger(good_patterns, FLOWER),
+            MessageReactSendMessageTrigger(FLOWER, FLOWER)
         ]
 
     async def on_ready(self) -> None:
@@ -54,6 +56,7 @@ class PhillipaBot(Client):
 
     async def on_reaction_add(self, reaction: Reaction, user: User) -> None:
         """Reaction added to message in cache."""
-        if not user.bot and reaction.emoji == FLOWER:
-            LOGGER.info(f"{user} is nice.")
-            await user.send(FLOWER)
+        for trigger in self.triggers:
+            result = await trigger.try_reaction(reaction, user)
+            if result:
+                return

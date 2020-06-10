@@ -1,7 +1,7 @@
 """Triggers for Phillipa."""
 import re
-from abc import ABCMeta, abstractmethod
-from typing import List, Pattern
+from abc import ABCMeta
+from typing import List, Optional, Pattern
 
 from discord import ClientUser, Message, Reaction, User
 
@@ -9,10 +9,9 @@ from discord import ClientUser, Message, Reaction, User
 class Trigger(metaclass=ABCMeta):
     """A trigger for Phillipa, with an associated action."""
 
-    @abstractmethod
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it triggers."""
-        pass
+        return False
 
     async def try_reaction(self, reaction: Reaction, user: User) -> bool:
         """Try a reaction to see if it triggers."""
@@ -54,7 +53,23 @@ class UserMentionedReactTrigger(Trigger):
 
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it matches."""
-        print(self.user, message.mentions)
         if match := self.user in message.mentions:
             await message.add_reaction(self.emoji)
         return match
+
+
+class MessageReactSendMessageTrigger(Trigger):
+    """Send the user a message when they react to a message."""
+
+    def __init__(self, emoji: str, message=Optional[str]) -> None:
+        self.emoji = emoji
+        if message is None:
+            self.message = emoji
+        else:
+            self.message = message
+    
+    async def try_reaction(self, reaction: Reaction, user: User, *, ignore_bots: bool = True) -> bool:
+        """Try a reaction."""
+        if ignore_bots and not user.bot or not ignore_bots:
+            if reaction.emoji == self.emoji:
+                await user.send(self.message)
