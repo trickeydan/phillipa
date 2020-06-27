@@ -87,25 +87,29 @@ class SpecificUserReactTrigger(Trigger):
         emoji: str,
         *,
         chance: int = 1,
-        trigger_word: str = "spam",
+        trigger_word: str = "aberdennschaften832y4782mzsdh92",
         exclusive: bool = False,
+        typing: bool = False
     ):
         self.user = user
         self.emoji = emoji
         self.chance = chance
         self.trigger_word = trigger_word
         self.exclusive = exclusive
+        self.typing = typing
 
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it matches."""
         if message.author.id == self.user:
-            if all(
+            if any(
                 [
                     randint(1, self.chance) == 1,
                     self.trigger_word in message.content.lower(),
                 ],
             ):
                 await message.add_reaction(self.emoji)
+                if self.typing:
+                    await message.channel.trigger_typing()
                 return self.exclusive
         return False
 

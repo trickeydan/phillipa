@@ -67,7 +67,7 @@ class PhillipaBot(Client):
         REX = 689409878162145280
 
         self.triggers: List[Trigger] = [
-            SpecificUserReactTrigger(LEON, SPAM, chance=3),
+            SpecificUserReactTrigger(LEON, SPAM, chance=3, trigger_word="spam", typing=True),
             SpecificUserReactTrigger(OLI, SSAGO, chance=35),
             SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
             SpecificUserReactTrigger(AMBIBUG, CROWN, chance=20),
