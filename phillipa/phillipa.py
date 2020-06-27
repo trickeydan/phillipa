@@ -110,6 +110,10 @@ class PhillipaBot(Client):
             ),
             MessageRegexReactTrigger(good_patterns, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
+            MessageReactSendMessageTrigger(
+                ALL_TRAINS["LOCOMOTIVE"],
+                ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),
+                ),
         ]
 
     async def on_ready(self) -> None:
