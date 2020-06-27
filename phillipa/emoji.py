@@ -1,9 +1,15 @@
 """Emoji constants."""
 
-FLOWER = "💮"
+FLOWER = "🌺"
+WHITE_FLOWER = "💮"
+FLAMINGO = "🦩"
+PRIDE = "🏳️‍🌈"
 ANGRY = "😠"
 DOLPHIN = "🐬"
 SPAM = "🥫"
+HEART = "❤️"
+CROWN = "👑"
+T_REX = "🦖"
 
 # Custom
 

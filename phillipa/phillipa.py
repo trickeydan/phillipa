@@ -9,11 +9,17 @@ from phillipa.emoji import (
     ALL_TRAINS,
     ANGRY,
     CONSTRUCTIONS,
+    CROWN,
     DOLPHIN,
+    FLAMINGO,
     FLOWER,
+    HEART,
+    PRIDE,
     SOTON_SSAGO,
     SPAM,
     SSAGO,
+    T_REX,
+    WHITE_FLOWER,
 )
 from phillipa.trigger import (
     MessageRandomReactTrigger,
@@ -53,11 +59,23 @@ class PhillipaBot(Client):
 
         OLI = 678903558828982274
         LEON = 419109892272422932
-        # DAN = 370197198589263874
+        ELIZABETH = 725806119661863053
+        AMBIBUG = 726241097713582111
+        MYTHILLI = 726481072430252053
+        DAN = 370197198589263874
+        THOMAS_PUGS = 726222915946807336
+        REX = 689409878162145280
 
         self.triggers: List[Trigger] = [
-            SpecificUserReactTrigger(LEON, SPAM, 5),
-            SpecificUserReactTrigger(OLI, SSAGO, 35),
+            SpecificUserReactTrigger(LEON, SPAM, chance=3),
+            SpecificUserReactTrigger(OLI, SSAGO, chance=35),
+            SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
+            SpecificUserReactTrigger(AMBIBUG, CROWN, chance=20),
+            SpecificUserReactTrigger(MYTHILLI, WHITE_FLOWER, chance=30, exclusive=True),
+            SpecificUserReactTrigger(MYTHILLI, FLAMINGO, chance=30, exclusive=True),
+            SpecificUserReactTrigger(DAN, PRIDE, chance=100),
+            SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=100),
+            SpecificUserReactTrigger(REX, T_REX, chance=5),
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRandomReactTrigger(train_patterns, list(ALL_TRAINS.values())),
             MessageRandomReactTrigger(

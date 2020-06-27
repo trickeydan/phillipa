@@ -82,21 +82,31 @@ class SpecificUserReactTrigger(Trigger):
     """React when a specific user speaks."""
 
     def __init__(
-        self, user: int, emoji: str, chance: int = 1, trigger_word: str = "spam",
+        self,
+        user: int,
+        emoji: str,
+        *,
+        chance: int = 1,
+        trigger_word: str = "spam",
+        exclusive: bool = False,
     ):
         self.user = user
         self.emoji = emoji
         self.chance = chance
         self.trigger_word = trigger_word
+        self.exclusive = exclusive
 
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it matches."""
         if message.author.id == self.user:
-            if all([
-                randint(1, self.chance) == 1,
-                self.trigger_word in message.content.lower(),
-            ]):
+            if all(
+                [
+                    randint(1, self.chance) == 1,
+                    self.trigger_word in message.content.lower(),
+                ],
+            ):
                 await message.add_reaction(self.emoji)
+                return self.exclusive
         return False
 
 
