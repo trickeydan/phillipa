@@ -16,3 +16,5 @@ def app() -> None:
     token = os.environ.get("DISCORD_TOKEN")
     if token is not None:
         client.run(token)
+    else:
+        print("Missing token.")

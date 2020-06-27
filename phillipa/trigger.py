@@ -1,7 +1,7 @@
 """Triggers for Phillipa."""
 import re
 from abc import ABCMeta
-from random import choice
+from random import choice, randint
 from typing import List, Optional, Pattern
 
 from discord import ClientUser, Message, Reaction, User
@@ -46,7 +46,10 @@ class MessageRegexReactTrigger(Trigger):
 
     def _message_compare(self, pattern: Pattern[str], content: str) -> bool:
         """Comparison function."""
-        return re.search(pattern, content) is not None
+        res = re.search(pattern, content) is not None
+        if res:
+            print(pattern)
+        return res
 
 
 class MessageRandomReactTrigger(MessageRegexReactTrigger):
@@ -73,6 +76,28 @@ class UserMentionedReactTrigger(Trigger):
         if match := self.user in message.mentions:
             await message.add_reaction(self.emoji)
         return match
+
+
+class SpecificUserReactTrigger(Trigger):
+    """React when a specific user speaks."""
+
+    def __init__(
+        self, user: int, emoji: str, chance: int = 1, trigger_word: str = "spam",
+    ):
+        self.user = user
+        self.emoji = emoji
+        self.chance = chance
+        self.trigger_word = trigger_word
+
+    async def try_message(self, message: Message) -> bool:
+        """Try a message to see if it matches."""
+        if message.author.id == self.user:
+            if all([
+                randint(1, self.chance) == 1,
+                self.trigger_word in message.content.lower(),
+            ]):
+                await message.add_reaction(self.emoji)
+        return False
 
 
 class MessageReactSendMessageTrigger(Trigger):

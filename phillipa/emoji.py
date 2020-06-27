@@ -2,6 +2,17 @@
 
 FLOWER = "💮"
 ANGRY = "😠"
+DOLPHIN = "🐬"
+SPAM = "🥫"
+
+# Custom
+
+SSAGO = "<:ssago:689408684975194122>"
+SOTON_SSAGO = "<:southampton:707919944255537255>"
+
+# Construction
+
+CONSTRUCTIONS = {"BUILDER": "👷", "CRANE": "🏗️", "CONSTRUCTION_SIGN": "🚧", "WRENCH": "🔧"}
 
 # Trains
 

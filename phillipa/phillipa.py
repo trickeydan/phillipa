@@ -5,11 +5,21 @@ from typing import List, Pattern
 
 from discord import Activity, ActivityType, Client, Message, Reaction, User
 
-from phillipa.emoji import ALL_TRAINS, ANGRY, FLOWER
+from phillipa.emoji import (
+    ALL_TRAINS,
+    ANGRY,
+    CONSTRUCTIONS,
+    DOLPHIN,
+    FLOWER,
+    SOTON_SSAGO,
+    SPAM,
+    SSAGO,
+)
 from phillipa.trigger import (
     MessageRandomReactTrigger,
     MessageReactSendMessageTrigger,
     MessageRegexReactTrigger,
+    SpecificUserReactTrigger,
     Trigger,
     UserMentionedReactTrigger,
 )
@@ -41,9 +51,30 @@ class PhillipaBot(Client):
             re.compile(kw, flags=re.IGNORECASE) for kw in train_keywords
         ]
 
+        OLI = 678903558828982274
+        LEON = 419109892272422932
+        # DAN = 370197198589263874
+
         self.triggers: List[Trigger] = [
+            SpecificUserReactTrigger(LEON, SPAM, 5),
+            SpecificUserReactTrigger(OLI, SSAGO, 35),
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRandomReactTrigger(train_patterns, list(ALL_TRAINS.values())),
+            MessageRandomReactTrigger(
+                [re.compile("build.?a.?rally", flags=re.IGNORECASE)],
+                list(CONSTRUCTIONS.values()),
+            ),
+            MessageRegexReactTrigger(
+                [
+                    re.compile("the crown inn", flags=re.IGNORECASE),
+                    re.compile("southampton", flags=re.IGNORECASE),
+                    re.compile("soton", flags=re.IGNORECASE),
+                ],
+                SOTON_SSAGO,
+            ),
+            MessageRegexReactTrigger(
+                [re.compile("dolphin", flags=re.IGNORECASE)], DOLPHIN,
+            ),
             MessageRegexReactTrigger(good_patterns, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
         ]
