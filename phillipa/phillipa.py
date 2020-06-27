@@ -20,6 +20,7 @@ from phillipa.emoji import (
     SSAGO,
     T_REX,
     WHITE_FLOWER,
+    WITAN,
 )
 from phillipa.trigger import (
     MessageRandomReactTrigger,
@@ -65,9 +66,19 @@ class PhillipaBot(Client):
         DAN = 370197198589263874
         THOMAS_PUGS = 726222915946807336
         REX = 689409878162145280
+        JOSH = 719651119952953436
+        LAUREN = 725098884120051782
+        ETHAN = 719650891187094138
+        YOULBURY = 690594174365335568
 
         self.triggers: List[Trigger] = [
-            SpecificUserReactTrigger(LEON, SPAM, chance=3, trigger_word="spam", typing=True),
+            SpecificUserReactTrigger(
+                LEON,
+                SPAM,
+                chance=3,
+                trigger_word="spam",
+                typing=True,
+            ),
             SpecificUserReactTrigger(OLI, SSAGO, chance=35),
             SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
             SpecificUserReactTrigger(AMBIBUG, CROWN, chance=20),
@@ -76,6 +87,10 @@ class PhillipaBot(Client):
             SpecificUserReactTrigger(DAN, PRIDE, chance=100),
             SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=100),
             SpecificUserReactTrigger(REX, T_REX, chance=5),
+            SpecificUserReactTrigger(JOSH, WITAN, chance=10, trigger_word="witan"),
+            SpecificUserReactTrigger(LAUREN, WITAN, chance=100, trigger_word="witan"),
+            SpecificUserReactTrigger(ETHAN, WITAN, chance=100, trigger_word="witan"),
+            SpecificUserReactTrigger(YOULBURY, WITAN, chance=1, trigger_word="witan"),
             MessageRegexReactTrigger(bad_patterns, ANGRY),
             MessageRandomReactTrigger(train_patterns, list(ALL_TRAINS.values())),
             MessageRandomReactTrigger(

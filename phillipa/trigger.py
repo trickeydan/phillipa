@@ -89,7 +89,7 @@ class SpecificUserReactTrigger(Trigger):
         chance: int = 1,
         trigger_word: str = "aberdennschaften832y4782mzsdh92",
         exclusive: bool = False,
-        typing: bool = False
+        typing: bool = False,
     ):
         self.user = user
         self.emoji = emoji
