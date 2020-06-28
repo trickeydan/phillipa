@@ -9,7 +9,7 @@ from phillipa.emoji import (
     ALL_TRAINS,
     ANGRY,
     CONSTRUCTIONS,
-    CROWN,
+    # CROWN,
     DOLPHIN,
     FLAMINGO,
     FLOWER,
@@ -61,13 +61,15 @@ class PhillipaBot(Client):
         OLI = 678903558828982274
         LEON = 419109892272422932
         ELIZABETH = 725806119661863053
-        AMBIBUG = 726241097713582111
+        AMBIBUG = 150782326345957390 
         MYTHILLI = 726481072430252053
         DAN = 370197198589263874
-        THOMAS_PUGS = 726222915946807336
+        THOMAS_PUGS = 114830573914161158
         REX = 689409878162145280
         JOSH = 719651119952953436
         LAUREN = 725098884120051782
+        LAURA_EGGS = 630765434416660481
+        MUFFIN_MAN = 281404242579816448
         ETHAN = 719650891187094138
         YOULBURY = 690594174365335568
 
@@ -81,11 +83,15 @@ class PhillipaBot(Client):
             ),
             SpecificUserReactTrigger(OLI, SSAGO, chance=35),
             SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
-            SpecificUserReactTrigger(AMBIBUG, CROWN, chance=20),
             SpecificUserReactTrigger(MYTHILLI, WHITE_FLOWER, chance=30, exclusive=True),
             SpecificUserReactTrigger(MYTHILLI, FLAMINGO, chance=30, exclusive=True),
-            SpecificUserReactTrigger(DAN, PRIDE, chance=100),
-            SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=100),
+
+            SpecificUserReactTrigger(DAN, PRIDE, chance=1),
+            SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=1),
+            SpecificUserReactTrigger(AMBIBUG, PRIDE, chance=1),
+            SpecificUserReactTrigger(LAURA_EGGS, PRIDE, chance=1),
+            SpecificUserReactTrigger(MUFFIN_MAN, PRIDE, chance=1),
+            
             SpecificUserReactTrigger(REX, T_REX, chance=5),
             SpecificUserReactTrigger(JOSH, WITAN, chance=10, trigger_word="witan"),
             SpecificUserReactTrigger(LAUREN, WITAN, chance=100, trigger_word="witan"),
@@ -110,6 +116,7 @@ class PhillipaBot(Client):
             ),
             MessageRegexReactTrigger(good_patterns, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
+            MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
             MessageReactSendMessageTrigger(
                 ALL_TRAINS["LOCOMOTIVE"],
                 ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),

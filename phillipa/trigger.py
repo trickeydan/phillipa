@@ -128,6 +128,7 @@ class MessageReactSendMessageTrigger(Trigger):
         self, reaction: Reaction, user: User, *, ignore_bots: bool = True,
     ) -> bool:
         """Try a reaction."""
+        print(reaction.emoji)
         if ignore_bots and not user.bot or not ignore_bots:
             if reaction.emoji == self.emoji:
                 await user.send(self.message)
