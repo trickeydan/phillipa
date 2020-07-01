@@ -22,8 +22,10 @@ class Trigger(metaclass=ABCMeta):
 class MessageRegexReactTrigger(Trigger):
     """A trigger that will react to a message when words are found."""
 
-    def __init__(self, regex_list: List[Pattern[str]], emoji: str) -> None:
-        self.regex_list = regex_list
+    def __init__(self, pattern_list: List[str], emoji: str) -> None:
+        self.regex_list: List[Pattern[str]] = [
+            re.compile(x, flags=re.IGNORECASE) for x in pattern_list
+        ]
         self.emoji = emoji
 
     async def try_message(self, message: Message) -> bool:
@@ -55,8 +57,10 @@ class MessageRegexReactTrigger(Trigger):
 class MessageRandomReactTrigger(MessageRegexReactTrigger):
     """React randomly to a message."""
 
-    def __init__(self, regex_list: List[Pattern[str]], emojis: List[str]) -> None:
-        self.regex_list = regex_list
+    def __init__(self, pattern_list: List[str], emojis: List[str]) -> None:
+        self.regex_list: List[Pattern[str]] = [
+            re.compile(x, flags=re.IGNORECASE) for x in pattern_list
+        ]
         self.emojis = emojis
 
     async def react(self, message: Message) -> None:

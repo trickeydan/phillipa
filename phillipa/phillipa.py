@@ -1,7 +1,6 @@
 """Phillipa the Dolphin Discord Bot."""
 import logging
-import re
-from typing import List, Pattern
+from typing import List
 
 from discord import Activity, ActivityType, Client, Message, Reaction, User
 
@@ -49,20 +48,11 @@ class PhillipaBot(Client):
         train_keywords: List[str],
     ):
         super().__init__()
-        good_patterns: List[Pattern[str]] = [
-            re.compile(kw, flags=re.IGNORECASE) for kw in good_keywords
-        ]
-        bad_patterns: List[Pattern[str]] = [
-            re.compile(kw, flags=re.IGNORECASE) for kw in bad_keywords
-        ]
-        train_patterns: List[Pattern[str]] = [
-            re.compile(kw, flags=re.IGNORECASE) for kw in train_keywords
-        ]
 
         OLI = 678903558828982274
         LEON = 419109892272422932
         ELIZABETH = 725806119661863053
-        AMBIBUG = 150782326345957390 
+        AMBIBUG = 150782326345957390
         MYTHILLI = 726481072430252053
         THOMAS_PUGS = 114830573914161158
         REX = 689409878162145280
@@ -72,59 +62,44 @@ class PhillipaBot(Client):
         YOULBURY = 690594174365335568
 
         DAN = 370197198589263874
-        LAURA_EGGS = 630765434416660481
-        MUFFIN_MAN = 281404242579816448
-        PIPSTER = 674784774669467663
+        # LAURA_EGGS = 630765434416660481
+        # MUFFIN_MAN = 281404242579816448
+        # PIPSTER = 674784774669467663
 
         self.triggers: List[Trigger] = [
             SpecificUserReactTrigger(
-                LEON,
-                SPAM,
-                chance=2,
-                trigger_word="spam",
-                typing=True,
+                LEON, SPAM, chance=2, trigger_word="spam", typing=True,
             ),
             SpecificUserReactTrigger(OLI, SSAGO, chance=35),
             SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
             SpecificUserReactTrigger(MYTHILLI, WHITE_FLOWER, chance=10, exclusive=True),
             SpecificUserReactTrigger(MYTHILLI, FLAMINGO, chance=10, exclusive=True),
-
             SpecificUserReactTrigger(DAN, PRIDE, chance=50),
             SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=50),
             SpecificUserReactTrigger(AMBIBUG, CROWN, chance=5, trigger_word="skribbl"),
-
             SpecificUserReactTrigger(REX, T_REX, chance=3),
             SpecificUserReactTrigger(JOSH, WITAN, chance=10, trigger_word="witan"),
             SpecificUserReactTrigger(LAUREN, WITAN, chance=100, trigger_word="witan"),
             SpecificUserReactTrigger(ETHAN, WITAN, chance=100, trigger_word="witan"),
             SpecificUserReactTrigger(YOULBURY, WITAN, chance=1, trigger_word="witan"),
-            MessageRegexReactTrigger(bad_patterns, ANGRY),
-            MessageRandomReactTrigger(train_patterns, list(ALL_TRAINS.values())),
+            MessageRegexReactTrigger(bad_keywords, ANGRY),
+            MessageRandomReactTrigger(train_keywords, list(ALL_TRAINS.values())),
             MessageRandomReactTrigger(
-                [re.compile("build.?a.?rally", flags=re.IGNORECASE)],
-                list(CONSTRUCTIONS.values()),
+                ["build.?a.?rally"], list(CONSTRUCTIONS.values()),
             ),
             MessageRegexReactTrigger(
-                [
-                    re.compile("the crown inn", flags=re.IGNORECASE),
-                    re.compile("southampton", flags=re.IGNORECASE),
-                    re.compile("soton", flags=re.IGNORECASE),
-                ],
+                ["the crown inn", "southampton", "soton"],
                 SOTON_SSAGO,
             ),
-            MessageRegexReactTrigger(
-                [re.compile("dolphin", flags=re.IGNORECASE)], DOLPHIN,
-            ),
-            MessageRegexReactTrigger(
-                [re.compile("minecraft", flags=re.IGNORECASE)], PICKAXE,
-            ),
-            MessageRegexReactTrigger(good_patterns, FLOWER),
+            MessageRegexReactTrigger(["dolphin"], DOLPHIN),
+            MessageRegexReactTrigger(["minecraft"], PICKAXE),
+            MessageRegexReactTrigger(good_keywords, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
             MessageReactSendMessageTrigger(
                 ALL_TRAINS["LOCOMOTIVE"],
                 ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),
-                ),
+            ),
         ]
 
     async def on_ready(self) -> None:
