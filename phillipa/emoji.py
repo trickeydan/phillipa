@@ -3,6 +3,7 @@
 FLOWER = "🌺"
 WHITE_FLOWER = "💮"
 FLAMINGO = "🦩"
+PICKAXE = "⛏️"
 PRIDE = "🏳️‍🌈"
 ANGRY = "😠"
 DOLPHIN = "🐬"

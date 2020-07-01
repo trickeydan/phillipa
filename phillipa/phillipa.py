@@ -9,11 +9,12 @@ from phillipa.emoji import (
     ALL_TRAINS,
     ANGRY,
     CONSTRUCTIONS,
-    # CROWN,
+    CROWN,
     DOLPHIN,
     FLAMINGO,
     FLOWER,
     HEART,
+    PICKAXE,
     PRIDE,
     SOTON_SSAGO,
     SPAM,
@@ -63,36 +64,36 @@ class PhillipaBot(Client):
         ELIZABETH = 725806119661863053
         AMBIBUG = 150782326345957390 
         MYTHILLI = 726481072430252053
-        DAN = 370197198589263874
         THOMAS_PUGS = 114830573914161158
         REX = 689409878162145280
         JOSH = 719651119952953436
         LAUREN = 725098884120051782
-        LAURA_EGGS = 630765434416660481
-        MUFFIN_MAN = 281404242579816448
         ETHAN = 719650891187094138
         YOULBURY = 690594174365335568
+
+        DAN = 370197198589263874
+        LAURA_EGGS = 630765434416660481
+        MUFFIN_MAN = 281404242579816448
+        PIPSTER = 674784774669467663
 
         self.triggers: List[Trigger] = [
             SpecificUserReactTrigger(
                 LEON,
                 SPAM,
-                chance=3,
+                chance=2,
                 trigger_word="spam",
                 typing=True,
             ),
             SpecificUserReactTrigger(OLI, SSAGO, chance=35),
             SpecificUserReactTrigger(ELIZABETH, HEART, chance=10),
-            SpecificUserReactTrigger(MYTHILLI, WHITE_FLOWER, chance=30, exclusive=True),
-            SpecificUserReactTrigger(MYTHILLI, FLAMINGO, chance=30, exclusive=True),
+            SpecificUserReactTrigger(MYTHILLI, WHITE_FLOWER, chance=10, exclusive=True),
+            SpecificUserReactTrigger(MYTHILLI, FLAMINGO, chance=10, exclusive=True),
 
-            SpecificUserReactTrigger(DAN, PRIDE, chance=1),
-            SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=1),
-            SpecificUserReactTrigger(AMBIBUG, PRIDE, chance=1),
-            SpecificUserReactTrigger(LAURA_EGGS, PRIDE, chance=1),
-            SpecificUserReactTrigger(MUFFIN_MAN, PRIDE, chance=1),
-            
-            SpecificUserReactTrigger(REX, T_REX, chance=5),
+            SpecificUserReactTrigger(DAN, PRIDE, chance=50),
+            SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=50),
+            SpecificUserReactTrigger(AMBIBUG, CROWN, chance=5, trigger_word="skribbl"),
+
+            SpecificUserReactTrigger(REX, T_REX, chance=3),
             SpecificUserReactTrigger(JOSH, WITAN, chance=10, trigger_word="witan"),
             SpecificUserReactTrigger(LAUREN, WITAN, chance=100, trigger_word="witan"),
             SpecificUserReactTrigger(ETHAN, WITAN, chance=100, trigger_word="witan"),
@@ -113,6 +114,9 @@ class PhillipaBot(Client):
             ),
             MessageRegexReactTrigger(
                 [re.compile("dolphin", flags=re.IGNORECASE)], DOLPHIN,
+            ),
+            MessageRegexReactTrigger(
+                [re.compile("minecraft", flags=re.IGNORECASE)], PICKAXE,
             ),
             MessageRegexReactTrigger(good_patterns, FLOWER),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
