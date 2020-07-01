@@ -49,8 +49,6 @@ class MessageRegexReactTrigger(Trigger):
     def _message_compare(self, pattern: Pattern[str], content: str) -> bool:
         """Comparison function."""
         res = re.search(pattern, content) is not None
-        if res:
-            print(pattern)
         return res
 
 
@@ -132,7 +130,6 @@ class MessageReactSendMessageTrigger(Trigger):
         self, reaction: Reaction, user: User, *, ignore_bots: bool = True,
     ) -> bool:
         """Try a reaction."""
-        print(reaction.emoji)
         if ignore_bots and not user.bot or not ignore_bots:
             if reaction.emoji == self.emoji:
                 await user.send(self.message)

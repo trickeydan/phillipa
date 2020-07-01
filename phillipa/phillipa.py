@@ -17,6 +17,7 @@ from phillipa.emoji import (
     PRIDE,
     SOTON_SSAGO,
     SPAM,
+    SWISS_FLAG,
     SSAGO,
     T_REX,
     WHITE_FLOWER,
@@ -67,6 +68,8 @@ class PhillipaBot(Client):
         # PIPSTER = 674784774669467663
 
         self.triggers: List[Trigger] = [
+
+            # People
             SpecificUserReactTrigger(
                 LEON, SPAM, chance=2, trigger_word="spam", typing=True,
             ),
@@ -78,28 +81,46 @@ class PhillipaBot(Client):
             SpecificUserReactTrigger(THOMAS_PUGS, PRIDE, chance=50),
             SpecificUserReactTrigger(AMBIBUG, CROWN, chance=5, trigger_word="skribbl"),
             SpecificUserReactTrigger(REX, T_REX, chance=3),
-            SpecificUserReactTrigger(JOSH, WITAN, chance=10, trigger_word="witan"),
-            SpecificUserReactTrigger(LAUREN, WITAN, chance=100, trigger_word="witan"),
-            SpecificUserReactTrigger(ETHAN, WITAN, chance=100, trigger_word="witan"),
-            SpecificUserReactTrigger(YOULBURY, WITAN, chance=1, trigger_word="witan"),
-            MessageRegexReactTrigger(bad_keywords, ANGRY),
-            MessageRandomReactTrigger(train_keywords, list(ALL_TRAINS.values())),
+
+            # Witan
+            SpecificUserReactTrigger(JOSH, WITAN, chance=5),
+            SpecificUserReactTrigger(LAUREN, WITAN, chance=5),
+            SpecificUserReactTrigger(ETHAN, WITAN, chance=5),
+            SpecificUserReactTrigger(YOULBURY, WITAN, chance=1),
+            MessageRegexReactTrigger(["witan"], HEART),
             MessageRandomReactTrigger(
-                ["build.?a.?rally"], list(CONSTRUCTIONS.values()),
+                ["kandersteg", "kisc", "switzerland"], WITAN,
             ),
+            MessageReactSendMessageTrigger(WITAN, WITAN + HEART + SWISS_FLAG),
+
+            
+
+            # Build a rally
+            MessageRandomReactTrigger(
+                ["build.?a.?rally", "construction", "digger"], list(CONSTRUCTIONS.values()),
+            ),
+
+            # Southampton SSAGO
             MessageRegexReactTrigger(
                 ["the crown inn", "southampton", "soton"],
                 SOTON_SSAGO,
             ),
             MessageRegexReactTrigger(["dolphin"], DOLPHIN),
-            MessageRegexReactTrigger(["minecraft"], PICKAXE),
-            MessageRegexReactTrigger(good_keywords, FLOWER),
-            MessageReactSendMessageTrigger(FLOWER, FLOWER),
-            MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
+
+            # Trains
+            MessageRandomReactTrigger(train_keywords, list(ALL_TRAINS.values())),
             MessageReactSendMessageTrigger(
                 ALL_TRAINS["LOCOMOTIVE"],
                 ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),
             ),
+
+            # Generic
+            MessageRegexReactTrigger(["minecraft"], PICKAXE),
+            MessageRegexReactTrigger(good_keywords, FLOWER),
+            MessageRegexReactTrigger(bad_keywords, ANGRY),
+            MessageRegexReactTrigger(["ssago"], SSAGO),   
+            MessageReactSendMessageTrigger(FLOWER, FLOWER),
+            MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
         ]
 
     async def on_ready(self) -> None:
