@@ -16,9 +16,7 @@ from phillipa.emoji import (
     HEART,
     PICKAXE,
     PRIDE,
-    SOTON_SSAGO,
     SPAM,
-    SSAGO,
     SWISS_FLAG,
     T_REX,
     WHITE_FLOWER,
@@ -91,6 +89,8 @@ class PhillipaBot(Client):
         # PIPSTER = 674784774669467663
 
         WITAN = str(get(self.emojis, name="Witan"))
+        SSAGO = str(get(self.emojis, name="ssago"))
+        SOTON_SSAGO = str(get(self.emojis, name="southampton"))
 
         self.triggers = [
 
