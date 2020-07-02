@@ -60,6 +60,7 @@ class PhillipaBot(Client):
         for trigger in self.triggers:
             result = await trigger.try_message(message)
             if result:
+                LOGGER.info(f"\"{message.content}\" -> {trigger}")
                 return
 
     async def on_reaction_add(self, reaction: Reaction, user: User) -> None:
@@ -67,6 +68,7 @@ class PhillipaBot(Client):
         for trigger in self.triggers:
             result = await trigger.try_reaction(reaction, user)
             if result:
+                LOGGER.info(f"{reaction.emoji} -> {trigger}")
                 return
 
     def _setup_triggers(self) -> None:
@@ -88,9 +90,9 @@ class PhillipaBot(Client):
         # MUFFIN_MAN = 281404242579816448
         # PIPSTER = 674784774669467663
 
-        WITAN = str(get(self.emojis, name="Witan"))
-        SSAGO = str(get(self.emojis, name="ssago"))
-        SOTON_SSAGO = str(get(self.emojis, name="southampton"))
+        WITAN = get(self.emojis, name="Witan")
+        SSAGO = get(self.emojis, name="ssago")
+        SOTON_SSAGO = get(self.emojis, name="southampton")
 
         self.triggers = [
 
@@ -116,7 +118,7 @@ class PhillipaBot(Client):
             MessageRegexReactTrigger(
                 ["kandersteg", "kisc", "switzerland"], WITAN,
             ),
-            MessageReactSendMessageTrigger(WITAN, WITAN + HEART + SWISS_FLAG),
+            MessageReactSendMessageTrigger(WITAN, str(WITAN) + HEART + SWISS_FLAG),
 
             # Build a rally
             MessageRandomReactTrigger(
