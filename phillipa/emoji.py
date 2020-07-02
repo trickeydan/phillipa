@@ -17,7 +17,6 @@ T_REX = "🦖"
 
 SSAGO = "<:ssago:689408684975194122>"
 SOTON_SSAGO = "<:southampton:707919944255537255>"
-WITAN = "<:Witan:689616792867569671>"
 
 # Construction
 

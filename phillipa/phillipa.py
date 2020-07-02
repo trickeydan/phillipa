@@ -3,6 +3,7 @@ import logging
 from typing import List
 
 from discord import Activity, ActivityType, Client, Message, Reaction, User
+from discord.utils import get
 
 from phillipa.emoji import (
     ALL_TRAINS,
@@ -17,11 +18,10 @@ from phillipa.emoji import (
     PRIDE,
     SOTON_SSAGO,
     SPAM,
-    SWISS_FLAG,
     SSAGO,
+    SWISS_FLAG,
     T_REX,
     WHITE_FLOWER,
-    WITAN,
 )
 from phillipa.trigger import (
     MessageRandomReactTrigger,
@@ -42,14 +42,34 @@ class PhillipaBot(Client):
     Receives events over websocket protocol and does stuff in response.
     """
 
-    def __init__(
-        self,
-        good_keywords: List[str],
-        bad_keywords: List[str],
-        train_keywords: List[str],
-    ):
+    def __init__(self) -> None:
         super().__init__()
+        self.triggers: List[Trigger] = []
 
+    async def on_ready(self) -> None:
+        """Called when bot is connected."""
+        LOGGER.info(f"Connected as {self.user}")
+        await self.change_presence(
+            activity=Activity(type=ActivityType.playing, name="in the waves"),
+        )
+        self._setup_triggers()
+
+    async def on_message(self, message: Message) -> None:
+        """Message received."""
+        for trigger in self.triggers:
+            result = await trigger.try_message(message)
+            if result:
+                return
+
+    async def on_reaction_add(self, reaction: Reaction, user: User) -> None:
+        """Reaction added to message in cache."""
+        for trigger in self.triggers:
+            result = await trigger.try_reaction(reaction, user)
+            if result:
+                return
+
+    def _setup_triggers(self) -> None:
+        """Setup the triggers."""
         OLI = 678903558828982274
         LEON = 419109892272422932
         ELIZABETH = 725806119661863053
@@ -67,7 +87,9 @@ class PhillipaBot(Client):
         # MUFFIN_MAN = 281404242579816448
         # PIPSTER = 674784774669467663
 
-        self.triggers: List[Trigger] = [
+        WITAN = str(get(self.emojis, name="Witan"))
+
+        self.triggers = [
 
             # People
             SpecificUserReactTrigger(
@@ -88,16 +110,18 @@ class PhillipaBot(Client):
             SpecificUserReactTrigger(ETHAN, WITAN, chance=5),
             SpecificUserReactTrigger(YOULBURY, WITAN, chance=1),
             MessageRegexReactTrigger(["witan"], HEART),
-            MessageRandomReactTrigger(
+            MessageRegexReactTrigger(
                 ["kandersteg", "kisc", "switzerland"], WITAN,
             ),
             MessageReactSendMessageTrigger(WITAN, WITAN + HEART + SWISS_FLAG),
 
-            
-
             # Build a rally
             MessageRandomReactTrigger(
-                ["build.?a.?rally", "construction", "digger"], list(CONSTRUCTIONS.values()),
+                [
+                    "build.?a.?rally",
+                    "construction",
+                    "digger",
+                ], list(CONSTRUCTIONS.values()),
             ),
 
             # Southampton SSAGO
@@ -108,7 +132,22 @@ class PhillipaBot(Client):
             MessageRegexReactTrigger(["dolphin"], DOLPHIN),
 
             # Trains
-            MessageRandomReactTrigger(train_keywords, list(ALL_TRAINS.values())),
+            MessageRandomReactTrigger([
+                "train",
+                "locomotive",
+                "railway",
+                "train station",
+                "carriage",
+                "maglev",
+                "train driver",
+                "train guard",
+                "kings cross",
+                "waterloo",
+                "main line",
+                "oyster card",
+                "london underground",
+            ], list(ALL_TRAINS.values())),
+
             MessageReactSendMessageTrigger(
                 ALL_TRAINS["LOCOMOTIVE"],
                 ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),
@@ -116,32 +155,27 @@ class PhillipaBot(Client):
 
             # Generic
             MessageRegexReactTrigger(["minecraft"], PICKAXE),
-            MessageRegexReactTrigger(good_keywords, FLOWER),
-            MessageRegexReactTrigger(bad_keywords, ANGRY),
-            MessageRegexReactTrigger(["ssago"], SSAGO),   
+            MessageRegexReactTrigger([
+                "phil(lipa)?",
+                "rishi",
+                "jesters",
+                "(bills ){2}bills",
+                "flower",
+                "baa+",
+                "number ten",
+                "number 10",
+                "fish pie",
+                "christmas cake",
+                "cheese salad",
+                "rack of ribs",
+            ], FLOWER),
+            MessageRegexReactTrigger([
+                "portsmouth",
+                "fishing net",
+                "pink thing",
+            ], ANGRY),
+            MessageRegexReactTrigger(["ssago"], SSAGO),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
+            UserMentionedReactTrigger(self.user, FLOWER),
         ]
-
-    async def on_ready(self) -> None:
-        """Called when bot is connected."""
-        LOGGER.info(f"Connected as {self.user}")
-        await self.change_presence(
-            activity=Activity(type=ActivityType.playing, name="in the waves"),
-        )
-
-        self.triggers.append(UserMentionedReactTrigger(self.user, FLOWER))
-
-    async def on_message(self, message: Message) -> None:
-        """Message received."""
-        for trigger in self.triggers:
-            result = await trigger.try_message(message)
-            if result:
-                return
-
-    async def on_reaction_add(self, reaction: Reaction, user: User) -> None:
-        """Reaction added to message in cache."""
-        for trigger in self.triggers:
-            result = await trigger.try_reaction(reaction, user)
-            if result:
-                return
