@@ -23,6 +23,7 @@ class MessageRegexReactTrigger(Trigger):
     """A trigger that will react to a message when words are found."""
 
     def __init__(self, pattern_list: List[str], emoji: str) -> None:
+        self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
         ]
@@ -51,11 +52,15 @@ class MessageRegexReactTrigger(Trigger):
         res = re.search(pattern, content) is not None
         return res
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.pattern_list},emoji={self.emoji})"
+
 
 class MessageRandomReactTrigger(MessageRegexReactTrigger):
     """React randomly to a message."""
 
     def __init__(self, pattern_list: List[str], emojis: List[str]) -> None:
+        self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
         ]
@@ -64,6 +69,9 @@ class MessageRandomReactTrigger(MessageRegexReactTrigger):
     async def react(self, message: Message) -> None:
         """React with an emoji."""
         await message.add_reaction(choice(self.emojis))
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.pattern_list},emojis={self.emojis})"
 
 
 class UserMentionedReactTrigger(Trigger):
@@ -78,6 +86,9 @@ class UserMentionedReactTrigger(Trigger):
         if match := self.user in message.mentions:
             await message.add_reaction(self.emoji)
         return match
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.user.name},emoji={self.emoji})"
 
 
 class SpecificUserReactTrigger(Trigger):
@@ -115,6 +126,9 @@ class SpecificUserReactTrigger(Trigger):
                 return self.exclusive
         return False
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(id={self.user},emoji={self.emoji})"
+
 
 class MessageReactSendMessageTrigger(Trigger):
     """Send the user a message when they react to a message."""
@@ -135,3 +149,6 @@ class MessageReactSendMessageTrigger(Trigger):
                 await user.send(self.message)
                 return True
         return False
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(emoji={self.emoji}, message={self.message})"

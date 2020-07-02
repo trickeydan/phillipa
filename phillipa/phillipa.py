@@ -54,6 +54,9 @@ class PhillipaBot(Client):
         )
         self._setup_triggers()
 
+        for trigger in self.triggers:
+            LOGGER.info(f"Added trigger: {trigger}")
+
     async def on_message(self, message: Message) -> None:
         """Message received."""
         for trigger in self.triggers:
