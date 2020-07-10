@@ -173,4 +173,5 @@ class PhillipaBot(Client):
             MessageRegexReactTrigger(["ssago"], SSAGO),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
+            UserMentionedReactTrigger(self.user, FLOWER),
         ]
