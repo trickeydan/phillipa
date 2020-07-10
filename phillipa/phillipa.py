@@ -8,14 +8,18 @@ from discord.utils import get
 from phillipa.emoji import (
     ALL_TRAINS,
     ANGRY,
+    CARTWHEEL,
     CONSTRUCTIONS,
     CROWN,
     DOLPHIN,
     FLAMINGO,
     FLOWER,
     HEART,
+    PAWPRINTS,
     PICKAXE,
+    PINEAPPLE,
     PRIDE,
+    SAD,
     SPAM,
     SWISS_FLAG,
     T_REX,
@@ -90,9 +94,9 @@ class PhillipaBot(Client):
         # MUFFIN_MAN = 281404242579816448
         # PIPSTER = 674784774669467663
 
-        WITAN = get(self.emojis, name="Witan")
-        SSAGO = get(self.emojis, name="ssago")
-        SOTON_SSAGO = get(self.emojis, name="southampton")
+        WITAN = get(self.emojis, name="Witan") or "❓"
+        SSAGO = get(self.emojis, name="ssago") or "❓"
+        SOTON_SSAGO = get(self.emojis, name="southampton") or "❓"
 
         self.triggers = [
             # People
@@ -149,7 +153,11 @@ class PhillipaBot(Client):
                 ALL_TRAINS["LOCOMOTIVE"] + (ALL_TRAINS["RAILWAY_CAR"] * 6),
             ),
             # Generic
-            MessageRegexReactTrigger(["minecraft"], PICKAXE),
+            MessageRegexReactTrigger(["bad phillipa", "naughty phillipa"], SAD),
+            MessageRegexReactTrigger(["pineapple"], PINEAPPLE),
+            MessageRegexReactTrigger(["minecraft", "meinkraft"], PICKAXE),
+            MessageRegexReactTrigger(["cartwheel", "dizzy"], CARTWHEEL),
+            MessageRegexReactTrigger(["dog", "good boy"], PAWPRINTS),
             MessageRegexReactTrigger(
                 [
                     "phil(lipa)?",
@@ -170,8 +178,8 @@ class PhillipaBot(Client):
             MessageRegexReactTrigger(
                 ["portsmouth", "fishing net", "pink thing", "politics",], ANGRY
             ),
-            MessageRegexReactTrigger(["ssago"], SSAGO),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
             UserMentionedReactTrigger(self.user, FLOWER),
+            MessageRegexReactTrigger(["ssago"], SSAGO),
         ]
