@@ -115,9 +115,11 @@ class PhillipaBot(Client):
             SpecificUserReactTrigger(JOSH, WITAN, chance=5),
             SpecificUserReactTrigger(LAUREN, WITAN, chance=5),
             SpecificUserReactTrigger(ETHAN, WITAN, chance=5),
-            SpecificUserReactTrigger(YOULBURY, WITAN, chance=1),
-            MessageRegexReactTrigger(["witan"], HEART),
-            MessageRegexReactTrigger(["kandersteg", "kisc", "switzerland"], WITAN),
+            SpecificUserReactTrigger(YOULBURY, WITAN, chance=5),
+            MessageRegexReactTrigger(["witan"], HEART, chance=20),
+            MessageRegexReactTrigger(
+                ["kandersteg", "kisc", "switzerland"], WITAN, chance=20,
+            ),
             MessageReactSendMessageTrigger(WITAN, str(WITAN) + HEART + SWISS_FLAG),
             # Build a rally
             MessageRandomReactTrigger(

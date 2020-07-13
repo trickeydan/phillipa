@@ -22,16 +22,24 @@ class Trigger(metaclass=ABCMeta):
 class MessageRegexReactTrigger(Trigger):
     """A trigger that will react to a message when words are found."""
 
-    def __init__(self, pattern_list: List[str], emoji: Union[str, Emoji]) -> None:
+    def __init__(
+        self, pattern_list: List[str], emoji: Union[str, Emoji], *, chance: int = 1,
+    ) -> None:
         self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
         ]
+        self.chance = chance
         self.emoji = emoji
 
     async def try_message(self, message: Message) -> bool:
         """Try a message to see if it matches."""
-        if match := self._message_matches(self.regex_list, message):
+        if all(
+            [
+                match := self._message_matches(self.regex_list, message),
+                randint(1, self.chance) == 1,
+            ],
+        ):
             await self.react(message)
         return match
 
@@ -59,7 +67,9 @@ class MessageRegexReactTrigger(Trigger):
 class MessageRandomReactTrigger(MessageRegexReactTrigger):
     """React randomly to a message."""
 
-    def __init__(self, pattern_list: List[str], emojis: List[str]) -> None:
+    def __init__(
+        self, pattern_list: List[str], emojis: List[str], *, chance: int = 1,
+    ) -> None:
         self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
@@ -133,8 +143,15 @@ class SpecificUserReactTrigger(Trigger):
 class MessageReactSendMessageTrigger(Trigger):
     """Send the user a message when they react to a message."""
 
-    def __init__(self, emoji: Union[str, Emoji], message: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        emoji: Union[str, Emoji],
+        message: Optional[str] = None,
+        *,
+        chance: int = 1,
+    ) -> None:
         self.emoji = emoji
+        self.chance = 1
         if message is None:
             self.message = emoji
         else:
@@ -145,7 +162,7 @@ class MessageReactSendMessageTrigger(Trigger):
     ) -> bool:
         """Try a reaction."""
         if ignore_bots and not user.bot or not ignore_bots:
-            if reaction.emoji == self.emoji:
+            if reaction.emoji == self.emoji and randint(1, self.chance) == 1:
                 await user.send(self.message)  # type: ignore
                 return True
         return False
