@@ -2,9 +2,9 @@
 import re
 from abc import ABCMeta
 from random import choice, randint
-from typing import List, Optional, Pattern
+from typing import List, Optional, Pattern, Union
 
-from discord import ClientUser, Message, Reaction, User
+from discord import ClientUser, Emoji, Message, Reaction, User
 
 
 class Trigger(metaclass=ABCMeta):
@@ -22,7 +22,7 @@ class Trigger(metaclass=ABCMeta):
 class MessageRegexReactTrigger(Trigger):
     """A trigger that will react to a message when words are found."""
 
-    def __init__(self, pattern_list: List[str], emoji: str) -> None:
+    def __init__(self, pattern_list: List[str], emoji: Union[str, Emoji]) -> None:
         self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
@@ -77,7 +77,7 @@ class MessageRandomReactTrigger(MessageRegexReactTrigger):
 class UserMentionedReactTrigger(Trigger):
     """React when a specific user is mentioned."""
 
-    def __init__(self, user: ClientUser, emoji: str):
+    def __init__(self, user: ClientUser, emoji: Union[str, Emoji]):
         self.user = user
         self.emoji = emoji
 
@@ -97,7 +97,7 @@ class SpecificUserReactTrigger(Trigger):
     def __init__(
         self,
         user: int,
-        emoji: str,
+        emoji: Union[str, Emoji],
         *,
         chance: int = 1,
         trigger_word: str = "aberdennschaften832y4782mzsdh92",
@@ -133,7 +133,7 @@ class SpecificUserReactTrigger(Trigger):
 class MessageReactSendMessageTrigger(Trigger):
     """Send the user a message when they react to a message."""
 
-    def __init__(self, emoji: str, message: Optional[str] = None) -> None:
+    def __init__(self, emoji: Union[str, Emoji], message: Optional[str] = None) -> None:
         self.emoji = emoji
         if message is None:
             self.message = emoji
@@ -146,7 +146,7 @@ class MessageReactSendMessageTrigger(Trigger):
         """Try a reaction."""
         if ignore_bots and not user.bot or not ignore_bots:
             if reaction.emoji == self.emoji:
-                await user.send(self.message)
+                await user.send(self.message)  # type: ignore
                 return True
         return False
 

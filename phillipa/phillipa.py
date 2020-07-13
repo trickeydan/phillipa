@@ -117,11 +117,11 @@ class PhillipaBot(Client):
             SpecificUserReactTrigger(ETHAN, WITAN, chance=5),
             SpecificUserReactTrigger(YOULBURY, WITAN, chance=1),
             MessageRegexReactTrigger(["witan"], HEART),
-            MessageRegexReactTrigger(["kandersteg", "kisc", "switzerland"], WITAN,),
+            MessageRegexReactTrigger(["kandersteg", "kisc", "switzerland"], WITAN),
             MessageReactSendMessageTrigger(WITAN, str(WITAN) + HEART + SWISS_FLAG),
             # Build a rally
             MessageRandomReactTrigger(
-                ["build.?a.?rally", "construction", "digger",],
+                ["build.?a.?rally", "construction", "digger"],
                 list(CONSTRUCTIONS.values()),
             ),
             # Southampton SSAGO
@@ -176,7 +176,7 @@ class PhillipaBot(Client):
                 FLOWER,
             ),
             MessageRegexReactTrigger(
-                ["portsmouth", "fishing net", "pink thing", "politics",], ANGRY
+                ["portsmouth", "fishing net", "pink thing", "politics"], ANGRY,
             ),
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
