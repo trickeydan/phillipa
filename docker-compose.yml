@@ -4,3 +4,12 @@ services:
     image: phillipa:latest
     env_file:
      - .env
+    networks:
+      - default
+      - traefik_traefik
+    deploy:
+      labels:
+        traefik.enable: 1
+        traefik.port: 8999
+        traefik.docker.network: traefik_traefik
+        traefik.frontend.rule: "Host:phillipa.trickey.io"
