@@ -2,7 +2,8 @@
 import logging
 from typing import List
 
-from discord import Activity, ActivityType, Client, Message, Reaction, User
+from discord import Activity, ActivityType, Message, Reaction, User
+from discord.ext.commands import Bot
 from discord.utils import get
 
 from phillipa.emoji import (
@@ -37,15 +38,15 @@ from phillipa.trigger import (
 LOGGER = logging.getLogger(__name__)
 
 
-class PhillipaBot(Client):
+class PhillipaBot(Bot):  # type: ignore
     """
-    Phillipa Discord Client.
+    Phillipa Discord Bot.
 
     Receives events over websocket protocol and does stuff in response.
     """
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("gophillipa:")
         self.triggers: List[Trigger] = []
 
     async def on_ready(self) -> None:
@@ -183,5 +184,5 @@ class PhillipaBot(Client):
             MessageReactSendMessageTrigger(FLOWER, FLOWER),
             MessageReactSendMessageTrigger(WHITE_FLOWER, FLOWER),
             UserMentionedReactTrigger(self.user, FLOWER),
-            MessageRegexReactTrigger(["ssago"], SSAGO),
+            MessageRegexReactTrigger(["ssago"], SSAGO, chance=10),
         ]
