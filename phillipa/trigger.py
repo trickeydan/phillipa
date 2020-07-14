@@ -70,6 +70,7 @@ class MessageRandomReactTrigger(MessageRegexReactTrigger):
     def __init__(
         self, pattern_list: List[str], emojis: List[str], *, chance: int = 1,
     ) -> None:
+        self.chance = chance
         self.pattern_list = pattern_list
         self.regex_list: List[Pattern[str]] = [
             re.compile(x, flags=re.IGNORECASE) for x in pattern_list
