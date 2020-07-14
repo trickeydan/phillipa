@@ -88,7 +88,7 @@ description = "A Python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.4.0a2503+geee5f7f"
+version = "1.4.0a2563+g3911d87"
 
 [package.dependencies]
 aiohttp = ">=3.6.0,<3.7.0"
@@ -100,10 +100,9 @@ typings = ["typing-extensions (>=3.7.4)"]
 voice = ["PyNaCl (1.3.0)"]
 
 [package.source]
-reference = "eee5f7fb866c4d6ab99f06e7f721dbc03514b10a"
+reference = "3911d8760a677d71d8622621899540c83cba0fe1"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
-
 [[package]]
 category = "dev"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -391,7 +390,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "4114f7132a6bee0e574636079440fdf0ff90b36efe9d629323cbec1fadb0be7d"
+content-hash = "e5b82d387421f9d0f544f2e2978dcadf7edadf5b767c75237e4230b2be4cf99a"
 python-versions = "^3.8"
 
 [metadata.files]

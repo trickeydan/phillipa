@@ -34,6 +34,7 @@ from phillipa.trigger import (
     Trigger,
     UserMentionedReactTrigger,
 )
+from phillipa.web import WebPhillipa
 
 LOGGER = logging.getLogger(__name__)
 
@@ -48,6 +49,10 @@ class PhillipaBot(Bot):  # type: ignore
     def __init__(self) -> None:
         super().__init__("gophillipa:")
         self.triggers: List[Trigger] = []
+
+        self.web = WebPhillipa(self)
+        self.add_cog(self.web)
+        self.loop.create_task(self.web.webserver())
 
     async def on_ready(self) -> None:
         """Called when bot is connected."""
